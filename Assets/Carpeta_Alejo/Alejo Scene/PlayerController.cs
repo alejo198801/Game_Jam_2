@@ -1,71 +1,110 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+namespace GameJam2.Flow
 {
-    private CharacterController controller;
-    private Animator animator;
-
-    [Header("Movimiento")]
-    public float walkSpeed = 4f;
-    public float runSpeed = 8f;
-    
-    [Header("Rotación")]
-    [Tooltip("Velocidad de giro en grados por segundo")]
-    public float turnSpeed = 720f; // 720°/s da un giro muy fluido y natural
-
-    void Start()
+    [RequireComponent(typeof(CharacterController))]
+    public class PlayerController : MonoBehaviour
     {
-        controller = GetComponent<CharacterController>();
-        animator = GetComponentInChildren<Animator>();
-    }
+        [Header("Movimiento")]
+        [SerializeField] private float walkSpeed = 4f;
+        [SerializeField] private float runSpeed = 5.5f;   // araña ~4.5; ajusta jugando
 
-    void Update()
-    {
-        Keyboard keyboard = Keyboard.current;
-        if (keyboard == null) return;
+        [Header("Mouse")]
+        [SerializeField] private Transform cameraTransform;   // la cámara (hija del Player)
+        [SerializeField] private float mouseSensitivity = 0.1f;
+        [SerializeField] private float minPitch = -80f;
+        [SerializeField] private float maxPitch = 80f;
 
-        bool isRunning = keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
-        float currentSpeed = isRunning ? runSpeed : walkSpeed;
+        [Header("Gravedad")]
+        [SerializeField] private float gravity = -20f;
 
-        float moveX = 0f;
-        if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) moveX += 1f;
-        if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) moveX -= 1f;
+        /// Velocidad horizontal actual (m/s).
+        public float CurrentSpeed { get; private set; }
 
-        float moveZ = 0f;
-        if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) moveZ += 1f;
-        if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) moveZ -= 1f;
+        /// Lo usan el ascensor y el teclado (luego conéctalo a PlayerControlLock).
+        public bool InputLocked { get; set; }
 
-        Vector3 move = new Vector3(moveX, 0f, moveZ).normalized;
+        private CharacterController controller;
+        private Animator animator;
+        private float verticalVelocity;
+        private float pitch;
 
-        // --- ROTACIÓN NATURAL ---
-        if (move != Vector3.zero)
+        private static readonly int SpeedHash = Animator.StringToHash("Speed");
+
+        private void Awake()
         {
-            // Calculamos la rotación hacia donde nos movemos
-            Quaternion targetRotation = Quaternion.LookRotation(move);
-
-            // Giramos gradualmente en grados por segundo en lugar de usar Slerp brusco
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation, 
-                targetRotation, 
-                turnSpeed * Time.deltaTime
-            );
+            controller = GetComponent<CharacterController>();
+            animator = GetComponentInChildren<Animator>();
+            if (cameraTransform == null && Camera.main != null)
+                cameraTransform = Camera.main.transform;
         }
 
-        // --- MOVIMIENTO Y GRAVEDAD ---
-        controller.Move(move * currentSpeed * Time.deltaTime);
-
-        if (!controller.isGrounded)
+        private void Start()
         {
-            controller.Move(Vector3.down * 9.81f * Time.deltaTime);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
-        // --- ANIMACIÓN SUAVE ---
-        float targetAnimationSpeed = move.magnitude * (isRunning ? 1f : 0.5f);
-        if (animator != null)
+        private void Update()
         {
-            // Usamos DampTime para que las animaciones entre Idle, Walk y Run no entren de golpe
-            animator.SetFloat("Speed", targetAnimationSpeed, 0.1f, Time.deltaTime);
+            Look();
+            Move();
+        }
+
+        private void Look()
+        {
+            if (InputLocked || Mouse.current == null) return;
+
+            Vector2 delta = Mouse.current.delta.ReadValue() * mouseSensitivity;
+
+            // Yaw: gira el cuerpo entero (izquierda/derecha)
+            transform.Rotate(Vector3.up * delta.x);
+
+            // Pitch: solo la cámara (arriba/abajo), limitado
+            pitch = Mathf.Clamp(pitch - delta.y, minPitch, maxPitch);
+            if (cameraTransform != null)
+                cameraTransform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+        }
+
+        private void Move()
+        {
+            var kb = Keyboard.current;
+            float x = 0f, z = 0f;
+            bool isRunning = false;
+
+            if (kb != null && !InputLocked)
+            {
+                isRunning = kb.leftShiftKey.isPressed || kb.rightShiftKey.isPressed;
+                if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) x += 1f;
+                if (kb.aKey.isPressed || kb.leftArrowKey.isPressed)  x -= 1f;
+                if (kb.wKey.isPressed || kb.upArrowKey.isPressed)    z += 1f;
+                if (kb.sKey.isPressed || kb.downArrowKey.isPressed)  z -= 1f;
+            }
+
+            // Relativo a hacia dónde mira el jugador: W = adelante, S = atrás
+            Vector3 dir = (transform.right * x + transform.forward * z);
+            if (dir.sqrMagnitude > 1f) dir.Normalize();
+
+            float speed = isRunning ? runSpeed : walkSpeed;
+
+            // Gravedad acumulada
+            if (controller.isGrounded && verticalVelocity < 0f)
+                verticalVelocity = -2f;
+            else
+                verticalVelocity += gravity * Time.deltaTime;
+
+            Vector3 velocity = dir * speed;
+            velocity.y = verticalVelocity;
+            controller.Move(velocity * Time.deltaTime);
+
+            CurrentSpeed = dir.magnitude * speed;
+
+            if (animator != null)
+            {
+                float anim = dir.magnitude * (isRunning ? 1f : 0.5f);
+                animator.SetFloat(SpeedHash, anim, 0.1f, Time.deltaTime);
+            }
         }
     }
 }
