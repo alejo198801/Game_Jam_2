@@ -2,10 +2,10 @@
 }
 
 .menu-button {
-    height: 62px;
+    height: 64px;
     margin-left: 0;
     margin-bottom: 0;
-    font-size: 30px;
+    font-size: 28px;
     color: rgb(41, 37, 30);
     background-color: rgba(32, 37, 43, 0);
     -unity-text-align: middle-left;
@@ -21,16 +21,17 @@
     width: 100%;
     flex-shrink: 0;
     padding-left: 8px;
-    -unity-font-style: bold;
+    -unity-font-style: normal;
+    -unity-font-definition: url("project://database/Assets/Carpeta_Laura/Fonts/IBMPlexMono-Medium.ttf?fileID=12800000&guid=18a82dc14d199cc4daddc8ce4b0a6aa7&type=3#IBMPlexMono-Medium");
 }
 
 .menu-button:hover {
     color: rgb(114, 45, 37);
-    background-color: rgba(70, 40, 20, 0);
+    background-color: rgba(70, 40, 20, 0.118);
 }
 
 .menu-button:active {
-    background-color: rgba(70, 40, 20, 0);
+    background-color: rgba(70, 40, 20, 0.118);
     color: rgb(66, 27, 22);
 }
 
@@ -70,4 +71,20 @@
     width: 230px;
     min-width: 230px;
     flex-shrink: 0;
+    -unity-font-definition: url("project://database/Assets/Carpeta_Laura/Fonts/IBMPlexMono-Regular.ttf?fileID=12800000&guid=8e85a71d98fe5f44b8bf5bea5c378e15&type=3#IBMPlexMono-Regular");
+}
+
+.ui-feedback:hover {
+    color: rgb(114, 45, 37);
+    background-color: rgba(70, 40, 20, 0.255);
+}
+
+.ui-feedback:focus {
+    color: rgb(114, 45, 37);
+    background-color: rgba(70, 40, 20, 0.255);
+}
+
+.ui-feedback {
+    color: rgb(48, 37, 29);
+    background-color: rgba(70, 40, 20, 0);
 }

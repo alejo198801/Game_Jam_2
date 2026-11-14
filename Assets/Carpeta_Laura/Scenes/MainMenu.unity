@@ -223,6 +223,9 @@ GameObject:
   - component: {fileID: 577955081}
   - component: {fileID: 577955082}
   - component: {fileID: 577955083}
+  - component: {fileID: 577955084}
+  - component: {fileID: 577955085}
+  - component: {fileID: 577955086}
   m_Layer: 0
   m_Name: MainMenuUI
   m_TagString: Untagged
@@ -280,6 +283,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a928ef819eac6e448ab1e92d80fa1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
+  normalTabImage: {fileID: 2800000, guid: cc6ae579586a89842b4f1e0219ca8c0a, type: 3}
+  activeTabImage: {fileID: 2800000, guid: d4b7bea06c30fd049b053cb5584377c9, type: 3}
+  slideDuration: 0.4
+  openTop: 48
+  hiddenTop: 600
 --- !u!114 &577955083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +305,129 @@ MonoBehaviour:
   elevatorAudio: {fileID: 855302256}
   arrivalBell: {fileID: 8300000, guid: 7537493c78b58fe4393c4fb358045cea, type: 3}
   doorOpening: {fileID: 8300000, guid: a6488a8a185b9724cb26d60455173bda, type: 3}
+--- !u!82 &577955084
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577955079}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -5076911725339831891, guid: 673d94b7ef84bde429d956d8bcd60acf, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.45
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &577955085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577955079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c4c18910562eb045a531c119da1ed67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonAudio
+  clickSound: {fileID: 8300000, guid: 8411155388acce648af9d628d8cc840d, type: 3}
+--- !u!114 &577955086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577955079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff7537da0e9bdc6459e043aaf06193ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioSettingsUI
+  mixer: {fileID: 24100000, guid: 673d94b7ef84bde429d956d8bcd60acf, type: 2}
 --- !u!1 &706458194
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +502,7 @@ AudioSource:
   m_GameObject: {fileID: 855302254}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5076911725339831891, guid: 673d94b7ef84bde429d956d8bcd60acf, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -500,11 +631,11 @@ AudioSource:
   m_GameObject: {fileID: 880062800}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6776456379640206730, guid: 673d94b7ef84bde429d956d8bcd60acf, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: d7570117a988dac44b230e4fb744542f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.36
+  m_Volume: 0.61
   m_Pitch: 1
   Loop: 0
   Mute: 0
