@@ -36,14 +36,7 @@ namespace GameJam2.Core
         }
 
         // SOLO PARA PROBAR: borra este Update cuando los puzles ya llamen Open()
-        private void Update()
-        {
-            var kb = Keyboard.current;
-            if (kb == null) return;
-
-            if (kb.oKey.wasPressedThisFrame) Open();
-            if (kb.cKey.wasPressedThisFrame) Close();
-        }
+       
 
         /// Desbloquea y abre. Esto es lo que llaman los puzles.
         public void Open()
