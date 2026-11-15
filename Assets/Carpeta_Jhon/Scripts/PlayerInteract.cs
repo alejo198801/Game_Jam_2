@@ -27,6 +27,7 @@ namespace GameJam2.Puzzles
             Ray ray = new Ray(transform.position, transform.forward);
             if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactMask))
             {
+                Debug.Log("Miro: " + hit.collider.name);
                 current = hit.collider.GetComponent<IInteractable>();
                 if (current != null)
                 {
