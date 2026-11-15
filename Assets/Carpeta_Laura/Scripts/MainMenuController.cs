@@ -14,6 +14,11 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private float openTop = 48f;
     [SerializeField] private float hiddenTop = 600f;
 
+    [Header("Sonido de papel")]
+    [SerializeField] private AudioSource paperAudio;
+    [SerializeField] private AudioClip paperSlide;
+    [SerializeField, Range(0f, 1f)] private float paperVolume = 0.3f;
+
     private VisualElement dossier;
     private VisualElement window;
     private VisualElement tabs;
@@ -153,11 +158,11 @@ public class MainMenuController : MonoBehaviour
             creditsBackButton.Focus();
     }
 
-    private IEnumerator Slide(
-        VisualElement sheet,
-        float from,
-        float to)
+    private IEnumerator Slide(VisualElement sheet, float from, float to)
     {
+        if (paperAudio != null && paperSlide != null)
+            paperAudio.PlayOneShot(paperSlide, paperVolume);
+
         float elapsed = 0f;
 
         while (elapsed < slideDuration)

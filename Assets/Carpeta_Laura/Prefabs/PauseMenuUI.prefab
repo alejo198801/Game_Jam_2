@@ -77,6 +77,9 @@ MonoBehaviour:
   slideDuration: 0.4
   openTop: 48
   hiddenTop: 600
+  paperAudio: {fileID: 1345108009264617936}
+  paperSlide: {fileID: 8300000, guid: 37763cb815de77e46b32311dffce4030, type: 3}
+  paperVolume: 0.3
 --- !u!82 &1345108009264617936
 AudioSource:
   m_ObjectHideFlags: 0
