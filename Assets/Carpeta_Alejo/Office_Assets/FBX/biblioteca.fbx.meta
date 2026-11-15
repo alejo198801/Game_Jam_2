@@ -3,7 +3,52 @@ guid: 00fe222a400db6ddd8cb3c47a052387a
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Madera
+    second: {fileID: 2100000, guid: 593c6a884a151173d93263fa9efc2ec6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tapa
+    second: {fileID: 2100000, guid: 393ca537b88051318ae0d546b031e087, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tapa.001
+    second: {fileID: 2100000, guid: 386911af581f92e85a782b9f0ca11147, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tapa.002
+    second: {fileID: 2100000, guid: a1ed6c547c80cee0aa0c99b70ab96abd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tapa.003
+    second: {fileID: 2100000, guid: cfa2ba5c37a73fe6d981622792dff07e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tapa.004
+    second: {fileID: 2100000, guid: c8fabd9bfdfb9589aab982dfc6109529, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tapa.005
+    second: {fileID: 2100000, guid: 484fc78b5c1888b418ce0e0931ebfb7f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tapa.006
+    second: {fileID: 2100000, guid: 0d47404ba37f8951788a7ea2a7720504, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hojas
+    second: {fileID: 2100000, guid: 76e5ed940d540b5e2acf5581c4bcafd7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

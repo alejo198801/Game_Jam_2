@@ -3,7 +3,17 @@ guid: 3604f2492f26447ecadbc526212c4d27
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Madera
+    second: {fileID: 2100000, guid: 5586c761d1e71a9bfba962155ed294f6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cojin.001
+    second: {fileID: 2100000, guid: cea653897251b020592ccebabd1c79be, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
