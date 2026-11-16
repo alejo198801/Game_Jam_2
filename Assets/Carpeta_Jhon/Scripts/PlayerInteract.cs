@@ -1,23 +1,69 @@
-// PROGRAMADOR A. Va en la cámara del jugador.
 using GameJam2.Core;
-using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace GameJam2.Puzzles
 {
     public class PlayerInteract : MonoBehaviour
     {
+        [Header("Interacción")]
         [SerializeField] private float interactDistance = 2.5f;
         [SerializeField] private LayerMask interactMask = ~0;
-        [SerializeField] private KeyCode interactKey = KeyCode.E;
-        [SerializeField] private TMP_Text promptText;   // "E para ..."; opcional
 
+        [Header("Interfaz")]
+        [SerializeField] private UIDocument puzzleDocument;
+
+        private Label promptLabel;
+        private VisualElement noteRoot;
         private IInteractable current;
+
+        private void OnEnable()
+        {
+            BindPrompt();
+            SetPrompt(null);
+        }
+
+        private void Start()
+        {
+            
+            if (promptLabel == null)
+                BindPrompt();
+
+            if (promptLabel == null)
+            {
+                Debug.LogError(
+                    "PlayerInteract: asigna Puzzle Document y revisa " +
+                    "el Name interaction-prompt en PuzzleUI.uxml.",
+                    this
+                );
+            }
+        }
+
+        private void BindPrompt()
+        {
+            if (puzzleDocument == null)
+                return;
+
+            VisualElement root = puzzleDocument.rootVisualElement;
+
+            promptLabel = root.Q<Label>("interaction-prompt");
+            noteRoot = root.Q("note-root");
+
+            
+            root.pickingMode = PickingMode.Ignore;
+
+            if (promptLabel != null)
+            {
+                promptLabel.pickingMode = PickingMode.Ignore;
+                promptLabel.style.display = DisplayStyle.None;
+            }
+        }
 
         private void Update()
         {
-            // NUEVO: Si el jugador está bloqueado (ej. en el ascensor o usando el teclado), no puede interactuar con nada
-            if (PlayerControlLock.IsLocked)
+            
+            if (PlayerControlLock.IsLocked || Time.timeScale == 0f)
             {
                 current = null;
                 SetPrompt(null);
@@ -25,38 +71,63 @@ namespace GameJam2.Puzzles
             }
 
             Ray ray = new Ray(transform.position, transform.forward);
-            if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactMask))
+
+            if (Physics.Raycast(
+                ray,
+                out RaycastHit hit,
+                interactDistance,
+                interactMask))
             {
-                Debug.Log("Miro: " + hit.collider.name);
                 current = hit.collider.GetComponent<IInteractable>();
+
                 if (current != null)
                 {
                     SetPrompt(current);
-                    if (Input.GetKeyDown(interactKey))
+
+                    if (Keyboard.current != null &&
+                        Keyboard.current.eKey.wasPressedThisFrame)
                     {
+                        
                         current.Interact(gameObject);
+
+                        
+                        current = null;
+                        SetPrompt(null);
                     }
+
                     return;
                 }
             }
+
             current = null;
             SetPrompt(null);
         }
 
         private void SetPrompt(IInteractable target)
         {
-            if (promptText != null)
+            if (promptLabel == null)
+                return;
+
+            
+            bool noteVisible = noteRoot != null &&
+                noteRoot.resolvedStyle.display == DisplayStyle.Flex;
+
+            if (target == null || noteVisible)
             {
-                if (target != null)
-                {
-                    promptText.gameObject.SetActive(true);
-                    promptText.text = $"[E] {target.InteractPrompt}";
-                }
-                else
-                {
-                    promptText.gameObject.SetActive(false);
-                }
+                promptLabel.style.display = DisplayStyle.None;
+                return;
             }
+
+            promptLabel.text = $"[E] {target.InteractPrompt}";
+            promptLabel.style.display = DisplayStyle.Flex;
+        }
+
+        private void OnDisable()
+        {
+            current = null;
+            SetPrompt(null);
+            promptLabel = null;
+            noteRoot = null;
         }
     }
 }

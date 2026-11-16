@@ -1,3 +1,4 @@
+using GameJam2.Core;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UIElements;
@@ -10,6 +11,7 @@ public class AudioSettingsUI : MonoBehaviour
     private Slider masterSlider;
     private Slider musicSlider;
     private Slider sfxSlider;
+    private Slider sensitivitySlider;
 
     private bool applyOnNextUpdate;
 
@@ -24,6 +26,21 @@ public class AudioSettingsUI : MonoBehaviour
         masterSlider = root.Q<Slider>("master-volume-slider");
         musicSlider = root.Q<Slider>("music-volume-slider");
         sfxSlider = root.Q<Slider>("sfx-volume-slider");
+        sensitivitySlider = root.Q<Slider>("sensitivity-slider");
+
+        
+        if (sensitivitySlider != null)
+        {
+            sensitivitySlider.lowValue = MouseSensitivitySettings.MinValue;
+            sensitivitySlider.highValue = MouseSensitivitySettings.MaxValue;
+            sensitivitySlider.SetValueWithoutNotify(MouseSensitivitySettings.Value);
+            sensitivitySlider.RegisterValueChangedCallback(OnSensitivityChanged);
+            MouseSensitivitySettings.Changed += RefreshSensitivity;
+        }
+        else
+        {
+            Debug.LogError("Falta el slider con Name sensitivity-slider.", this);
+        }
 
         if (mixer == null || masterSlider == null ||
             musicSlider == null || sfxSlider == null)
@@ -35,7 +52,7 @@ public class AudioSettingsUI : MonoBehaviour
             return;
         }
 
-        
+
         PrepareSlider(masterSlider, MasterKey);
         PrepareSlider(musicSlider, MusicKey);
         PrepareSlider(sfxSlider, SFXKey);
@@ -44,7 +61,7 @@ public class AudioSettingsUI : MonoBehaviour
         musicSlider.RegisterValueChangedCallback(OnMusicChanged);
         sfxSlider.RegisterValueChangedCallback(OnSFXChanged);
 
-        
+
         applyOnNextUpdate = true;
     }
 
@@ -69,6 +86,17 @@ public class AudioSettingsUI : MonoBehaviour
         slider.SetValueWithoutNotify(Mathf.Clamp(savedValue, 0f, 100f));
     }
 
+    private void OnSensitivityChanged(ChangeEvent<float> evt)
+    {
+        MouseSensitivitySettings.Value = evt.newValue;
+    }
+
+    private void RefreshSensitivity(float value)
+    {
+        if (sensitivitySlider != null)
+            sensitivitySlider.SetValueWithoutNotify(value);
+    }
+
     private void OnMasterChanged(ChangeEvent<float> evt)
     {
         PlayerPrefs.SetFloat(MasterKey, evt.newValue);
@@ -89,18 +117,18 @@ public class AudioSettingsUI : MonoBehaviour
 
     private void ApplyEffects(float value)
     {
-        
+
         ApplyVolume("SFXVolume", value);
         ApplyVolume("AmbienceVolume", value);
     }
 
     private void ApplyVolume(string parameter, float value)
     {
-     
+
         float decibels = value <= 0f
             ? -80f
             : Mathf.Max(-80f, 20f * Mathf.Log10(value / 100f));
-         
+
         if (!mixer.SetFloat(parameter, decibels))
         {
             Debug.LogWarning(
@@ -113,6 +141,10 @@ public class AudioSettingsUI : MonoBehaviour
     private void OnDisable()
     {
         applyOnNextUpdate = false;
+
+        MouseSensitivitySettings.Changed -= RefreshSensitivity;
+        if (sensitivitySlider != null)
+            sensitivitySlider.UnregisterValueChangedCallback(OnSensitivityChanged);
 
         if (masterSlider != null)
             masterSlider.UnregisterValueChangedCallback(OnMasterChanged);

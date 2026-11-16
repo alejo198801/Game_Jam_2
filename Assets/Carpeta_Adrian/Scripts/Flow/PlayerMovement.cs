@@ -1,5 +1,3 @@
-// PROGRAMADOR B. Movimiento en primera persona (nuevo Input System).
-// Va en el objeto "Player" (tag Player) con CharacterController; la cámara es hija.
 using GameJam2.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,11 +8,11 @@ namespace GameJam2.Flow
     public class PlayerMovement : MonoBehaviour
     {
         [Header("Referencias")]
-        [SerializeField] private Transform cameraPivot;      // la cámara (hija del Player)
+        [SerializeField] private Transform cameraPivot;   
 
         [Header("Movimiento")]
         [SerializeField] private float walkSpeed = 3f;
-        [SerializeField] private float sprintSpeed = 5f;     // araña ~4.5; ajusta jugando
+        [SerializeField] private float sprintSpeed = 5f;     
 
         [Header("Mouse")]
         [SerializeField] private float mouseSensitivity = 0.1f;
@@ -24,10 +22,10 @@ namespace GameJam2.Flow
         [Header("Gravedad")]
         [SerializeField] private float gravity = -20f;
 
-        public float CurrentSpeed { get; private set; }   // la araña puede leerlo
+        public float CurrentSpeed { get; private set; }   
 
         private CharacterController cc;
-        private Animator animator;                        // opcional
+        private Animator animator;                       
         private float pitch;
         private float verticalVel;
 
@@ -37,7 +35,7 @@ namespace GameJam2.Flow
         {
             cc = GetComponent<CharacterController>();
             animator = GetComponentInChildren<Animator>();
-            if (animator != null) animator.applyRootMotion = false;   // evita que la animación mueva al jugador
+            if (animator != null) animator.applyRootMotion = false;
             if (cameraPivot == null && Camera.main != null)
                 cameraPivot = Camera.main.transform;
 
@@ -59,26 +57,26 @@ namespace GameJam2.Flow
             {
                 float x = 0f, z = 0f;
                 if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) x += 1f;
-                if (kb.aKey.isPressed || kb.leftArrowKey.isPressed)  x -= 1f;
-                if (kb.wKey.isPressed || kb.upArrowKey.isPressed)    z += 1f;
-                if (kb.sKey.isPressed || kb.downArrowKey.isPressed)  z -= 1f;
+                if (kb.aKey.isPressed || kb.leftArrowKey.isPressed) x -= 1f;
+                if (kb.wKey.isPressed || kb.upArrowKey.isPressed) z += 1f;
+                if (kb.sKey.isPressed || kb.downArrowKey.isPressed) z -= 1f;
 
                 sprinting = kb.leftShiftKey.isPressed || kb.rightShiftKey.isPressed;
 
-                // Relativo a hacia dónde mira el jugador: W = adelante, S = atrás
+                
                 dir = transform.right * x + transform.forward * z;
                 if (dir.sqrMagnitude > 1f) dir.Normalize();
             }
 
             float speed = sprinting ? sprintSpeed : walkSpeed;
 
-            // Gravedad acumulada (sigue cayendo aunque esté bloqueado)
+            
             if (cc.isGrounded && verticalVel < 0f) verticalVel = -2f;
             else verticalVel += gravity * Time.deltaTime;
 
             Vector3 velocity = dir * speed;
             velocity.y = verticalVel;
-            cc.Move(velocity * Time.deltaTime);   // un solo Move por frame
+            cc.Move(velocity * Time.deltaTime);   
 
             CurrentSpeed = dir.magnitude * speed;
 
@@ -90,12 +88,14 @@ namespace GameJam2.Flow
         {
             if (Mouse.current == null) return;
 
-            Vector2 delta = Mouse.current.delta.ReadValue() * mouseSensitivity;
+            
+            Vector2 delta = Mouse.current.delta.ReadValue() * mouseSensitivity
+                * MouseSensitivitySettings.Value;
 
-            // Yaw: gira el cuerpo (izquierda/derecha)
+           
             transform.Rotate(Vector3.up * delta.x);
 
-            // Pitch: solo la cámara (arriba/abajo)
+            
             pitch = Mathf.Clamp(pitch - delta.y, minPitch, maxPitch);
             if (cameraPivot != null)
                 cameraPivot.localRotation = Quaternion.Euler(pitch, 0f, 0f);

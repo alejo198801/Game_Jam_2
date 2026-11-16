@@ -6018,8 +6018,7 @@ MonoBehaviour:
   interactMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  interactKey: 101
-  promptText: {fileID: 0}
+  puzzleDocument: {fileID: 136953980}
 --- !u!114 &702838141
 MonoBehaviour:
   m_ObjectHideFlags: 0

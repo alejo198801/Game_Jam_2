@@ -1,10 +1,15 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(UIDocument))]
 public class MainMenuController : MonoBehaviour
 {
+    [Header("Escena de juego")]
+    [SerializeField] private string gameScene = "PruebaJugador";
+
+
     [Header("Pestañas")]
     [SerializeField] private Texture2D normalTabImage;
     [SerializeField] private Texture2D activeTabImage;
@@ -85,7 +90,7 @@ public class MainMenuController : MonoBehaviour
             return;
         }
 
-       
+        playButton.clicked += PlayGame;
         homeTab.clicked += ShowHome;
         optionsTab.clicked += ShowOptions;
         controlsTab.clicked += ShowControls;
@@ -274,5 +279,26 @@ public class MainMenuController : MonoBehaviour
 
         if (quitButton != null)
             quitButton.clicked -= QuitGame;
+
+        if (playButton != null)
+            playButton.clicked -= PlayGame;
+    }
+
+    private void PlayGame()
+    {
+        if (isAnimating)
+            return;
+
+        if (!Application.CanStreamedLevelBeLoaded(gameScene))
+        {
+            Debug.LogError(
+                "Añade la escena " + gameScene + " a la Scene List.",
+                this
+            );
+            return;
+        }
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(gameScene);
     }
 }
