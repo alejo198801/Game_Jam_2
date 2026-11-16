@@ -1,0 +1,37 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="puzzle-root" style="flex-grow: 1; position: absolute; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.549); top: 0; left: 0; bottom: 0; right: 0; display: none;">
+        <ui:VisualElement name="keypad-panel" style="flex-grow: 0; width: 460px; padding-top: 28px; padding-right: 28px; padding-bottom: 28px; padding-left: 28px; background-color: rgb(20, 18, 22); -unity-font-definition: url(&quot;project://database/Assets/Carpeta_Laura/Fonts/ShareTechMono-Regular.ttf?fileID=12800000&amp;guid=3f862612f15ac114e8394bee9e3074e9&amp;type=3#ShareTechMono-Regular&quot;); flex-shrink: 0;">
+            <ui:Label text="PANEL DE ACCESO" name="keypad-title" style="font-size: 24px; color: rgb(229, 225, 223);"/>
+            <ui:Label text="BLOQUEADO · INGRESE CÓDIGO" name="keypad-status" style="font-size: 16px; color: rgb(230, 49, 56);"/>
+            <ui:Label text="_ _ _ _" name="keypad-display" style="color: rgb(229, 225, 223); font-size: 40px; height: 76px; background-color: rgb(9, 8, 9); -unity-text-align: middle-center; margin-top: 12px; margin-bottom: 12px; flex-shrink: 0;"/>
+            <ui:VisualElement name="keypad-row-1" style="flex-grow: 0; flex-direction: row; height: 72px; flex-shrink: 0; margin-bottom: 0;">
+                <ui:Button text="1" name="digit-1-button" style="flex-grow: 1; flex-basis: 0; height: 64px; margin-top: 4px; margin-bottom: 4px; font-size: 28px; background-color: rgb(37, 33, 36); color: rgb(229, 225, 223);"/>
+                <ui:Button text="2" name="digit-2-button" style="color: rgb(229, 225, 223); font-size: 28px; background-color: rgb(37, 33, 36); margin-top: 4px; margin-bottom: 4px; height: 64px; flex-grow: 1; flex-basis: 0;"/>
+                <ui:Button text="3" name="digit-3-button" style="color: rgb(229, 225, 223); background-color: rgb(37, 33, 36); font-size: 28px; flex-basis: 0; flex-grow: 1; height: 64px; margin-top: 4px; margin-bottom: 4px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="keypad-row-2" style="flex-grow: 0; flex-direction: row; height: 72px; flex-shrink: 0; margin-bottom: 0;">
+                <ui:Button text="4" name="digit-4-button" style="flex-grow: 1; flex-basis: 0; height: 64px; margin-top: 4px; margin-bottom: 4px; font-size: 28px; background-color: rgb(37, 33, 36); color: rgb(229, 225, 223);"/>
+                <ui:Button text="5" name="digit-5-button" style="color: rgb(229, 225, 223); font-size: 28px; background-color: rgb(37, 33, 36); margin-top: 4px; margin-bottom: 4px; height: 64px; flex-grow: 1; flex-basis: 0;"/>
+                <ui:Button text="6" name="digit-6-button" style="color: rgb(229, 225, 223); background-color: rgb(37, 33, 36); font-size: 28px; flex-basis: 0; flex-grow: 1; height: 64px; margin-top: 4px; margin-bottom: 4px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="keypad-row-3" style="flex-grow: 0; flex-direction: row; height: 72px; flex-shrink: 0; margin-bottom: 0;">
+                <ui:Button text="7" name="digit-7-button" style="flex-grow: 1; flex-basis: 0; height: 64px; margin-top: 4px; margin-bottom: 4px; font-size: 28px; background-color: rgb(37, 33, 36); color: rgb(229, 225, 223);"/>
+                <ui:Button text="8" name="digit-8-button" style="color: rgb(229, 225, 223); font-size: 28px; background-color: rgb(37, 33, 36); margin-top: 4px; margin-bottom: 4px; height: 64px; flex-grow: 1; flex-basis: 0;"/>
+                <ui:Button text="9" name="digit-9-button" style="color: rgb(229, 225, 223); background-color: rgb(37, 33, 36); font-size: 28px; flex-basis: 0; flex-grow: 1; height: 64px; margin-top: 4px; margin-bottom: 4px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="keypad-row-4" style="flex-grow: 0; flex-direction: row; height: 72px; flex-shrink: 0; margin-bottom: 0;">
+                <ui:Button text="BORRAR" name="keypad-delete-button" style="flex-grow: 1; flex-basis: 0; height: 64px; margin-top: 4px; margin-bottom: 4px; font-size: 18px; background-color: rgb(37, 33, 36); color: rgb(229, 225, 223);"/>
+                <ui:Button text="0" name="digit-0-button" style="color: rgb(229, 225, 223); font-size: 28px; background-color: rgb(37, 33, 36); margin-top: 4px; margin-bottom: 4px; height: 64px; flex-grow: 1; flex-basis: 0;"/>
+                <ui:Button text="ACEPTAR" name="keypad-submit-button" style="color: rgb(230, 49, 56); background-color: rgb(37, 33, 36); font-size: 18px; flex-basis: 0; flex-grow: 1; height: 64px; margin-top: 4px; margin-bottom: 4px;"/>
+            </ui:VisualElement>
+            <ui:Button text="← CERRAR" name="keypad-close-button" style="height: 40px; margin-top: 12px; color: rgb(229, 225, 223); font-size: 20px; background-color: rgba(188, 188, 188, 0); flex-shrink: 0;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="note-root" style="flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.549);">
+        <ui:VisualElement name="note-panel" style="flex-grow: 0; width: 540px; flex-shrink: 0; padding-top: 32px; padding-right: 32px; padding-bottom: 32px; padding-left: 32px; background-color: rgba(0, 0, 0, 0); -unity-font-definition: url(&quot;project://database/Assets/Carpeta_Laura/Fonts/ShareTechMono-Regular.ttf?fileID=12800000&amp;guid=3f862612f15ac114e8394bee9e3074e9&amp;type=3#ShareTechMono-Regular&quot;); background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/papelmenu.png?fileID=2800000&amp;guid=bfc5a762361127b4d83301d92ec26455&amp;type=3#papelmenu&quot;);">
+            <ui:Label text="ARCHIVO INTERNO · CONFIDENCIAL" name="note-header" style="font-size: 16px; color: rgb(37, 33, 36);"/>
+            <ui:Label text="NOTA ENCONTRADA" name="note-title" style="font-size: 28px; color: rgb(37, 33, 36); margin-top: 12px; margin-bottom: 12px; padding-bottom: 8px; border-bottom-color: rgb(230, 49, 56); border-bottom-width: 2px;"/>
+            <ui:Label text="Dígito 1: 4" name="note-content" style="font-size: 36px; color: rgb(37, 33, 36); margin-bottom: 16px; flex-wrap: wrap;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

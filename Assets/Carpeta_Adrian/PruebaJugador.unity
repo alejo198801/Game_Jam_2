@@ -2287,6 +2287,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126378553}
   m_CullTransparentMesh: 1
+--- !u!1 &136953979
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 136953981}
+  - component: {fileID: 136953980}
+  m_Layer: 0
+  m_Name: PuzzleUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &136953980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136953979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 3b103c8505f6a93478c020601f322ee0, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 9bf9904cbedc4cf41b8d260be1c890e2, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &136953981
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136953979}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.66175, y: 0, z: 9.65481}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &149760318
 GameObject:
   m_ObjectHideFlags: 0
@@ -4202,8 +4257,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameJam2.Puzzles.KeypadPanel
   codeManager: {fileID: 1168906254}
+  puzzleDocument: {fileID: 136953980}
   panelRoot: {fileID: 728915441}
-  display: {fileID: 761972949}
 --- !u!1 &431047549
 GameObject:
   m_ObjectHideFlags: 0
@@ -6557,6 +6612,63 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1001 &744328021
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.05393
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.59015
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7488113698767869374, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967606590666079270, guid: 8e38933a749b0974199e545c8215a446, type: 3}
+      propertyPath: m_Name
+      value: PauseMenuUI
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8e38933a749b0974199e545c8215a446, type: 3}
 --- !u!43 &755446087
 Mesh:
   m_ObjectHideFlags: 0
@@ -21127,9 +21239,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f2372f892f1eb419b4357f1b4a1ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameJam2.Puzzles.NoteDisplay
-  root: {fileID: 888109820}
-  text: {fileID: 113196099}
+  puzzleDocument: {fileID: 136953980}
   showSeconds: 3
+  root: {fileID: 888109820}
 --- !u!114 &2068233196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22196,3 +22308,5 @@ SceneRoots:
   - {fileID: 2068233199}
   - {fileID: 1693745220}
   - {fileID: 1217898991}
+  - {fileID: 136953981}
+  - {fileID: 744328021}

@@ -1,0 +1,49 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Carpeta_Laura/UI/MainMenu.uss?fileID=7433441132597879392&amp;guid=45d6b30ef85949f4c876fff1fb51cf71&amp;type=3#MainMenu"/>
+    <ui:VisualElement name="menu-root" class="pause-menu" style="width: 100%; height: 100%; flex-grow: 1; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.55); display: flex;">
+        <ui:VisualElement name="dossier-root" style="position: relative; width: 770px; height: 580px; flex-grow: 0; flex-shrink: 0;">
+            <ui:VisualElement name="dossier-back" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/basemenu.png?fileID=2800000&amp;guid=3829e5111ac650041bf1b9fd31b69a6e&amp;type=3#basemenu&quot;); overflow: visible;"/>
+            <ui:VisualElement name="dossier-window" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 32px; overflow: hidden; display: flex;">
+                <ui:VisualElement name="pause-panel" class="dossier-sheet" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/papelmenu.png?fileID=2800000&amp;guid=bfc5a762361127b4d83301d92ec26455&amp;type=3#papelmenu&quot;); display: flex;">
+                    <ui:Label name="pause-file-header" text="ARCHIVO INTERNO · ACCESO RESTRINGIDO" class="file-header"/>
+                    <ui:Label name="pause-title" text="PAUSA" class="sheet-title"/>
+                    <ui:Button name="resume-button" text="CONTINUAR" class="menu-button"/>
+                    <ui:Button name="main-menu-button" text="MENÚ PRINCIPAL" class="menu-button"/>
+                    <ui:Label name="pause-hint" text="ESC · CONTINUAR" class="pause-hint"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="options-panel" class="dossier-sheet" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/papelmenu.png?fileID=2800000&amp;guid=bfc5a762361127b4d83301d92ec26455&amp;type=3#papelmenu&quot;); display: none;">
+                    <ui:Label name="options-file-header" text="ARCHIVO INTERNO · ACCESO RESTRINGIDO" class="file-header"/>
+                    <ui:Label text="CONFIGURACIÓN" name="options-title" class="sheet-title"/>
+                    <ui:Slider label="VOLUMEN GENERAL" value="42" high-value="100" name="master-volume-slider" class="settings-slider"/>
+                    <ui:Slider label="MÚSICA" value="42" high-value="100" name="music-volume-slider" class="settings-slider"/>
+                    <ui:Slider label="EFECTOS" value="42" high-value="100" name="sfx-volume-slider" class="settings-slider"/>
+                    <ui:Slider label="SENSIBILIDAD" value="1" high-value="3" name="sensitivity-slider" low-value="0.1" class="settings-slider"/>
+                    <ui:Button text="← VOLVER" name="options-back-button" class="ui-feedback back-button"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="controls-panel" class="dossier-sheet" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/papelmenu.png?fileID=2800000&amp;guid=bfc5a762361127b4d83301d92ec26455&amp;type=3#papelmenu&quot;); display: none;">
+                    <ui:Label name="controls-file-header" text="ARCHIVO INTERNO · ACCESO RESTRINGIDO" class="file-header"/>
+                    <ui:Label text="CONTROLES" name="controls-title" class="sheet-title"/>
+                    <ui:VisualElement name="movement-row" class="control-row">
+                        <ui:VisualElement name="movement-icon" picking-mode="Ignore" class="control-icon" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/wasd.png?fileID=2800000&amp;guid=f59b3b2b4b8f0904795930a659d7b0e1&amp;type=3#wasd&quot;);"/>
+                        <ui:Label text="MOVERSE" name="movement-description" class="control-description"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="interaction-row" class="control-row">
+                        <ui:VisualElement name="interaction-icon" picking-mode="Ignore" class="control-icon" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/Epickup.png?fileID=2800000&amp;guid=1df53d16705941a479390049d24c699d&amp;type=3#Epickup&quot;);"/>
+                        <ui:Label text="INTERACTUAR /&#10;MOVER OBJETOS" name="interaction-description" class="control-description"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="camera-row" class="control-row">
+                        <ui:VisualElement name="camera-icon" picking-mode="Ignore" class="control-icon" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/mouse.png?fileID=2800000&amp;guid=2b8e9a66b4978bb45887f74d6c98eb88&amp;type=3#mouse&quot;);"/>
+                        <ui:Label text="GIRAR CÁMARA" name="camera-description" class="control-description"/>
+                    </ui:VisualElement>
+                    <ui:Button text="← VOLVER" name="controls-back-button" class="ui-feedback back-button"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="dossier-pocket" picking-mode="Ignore" style="flex-grow: 1; position: absolute; left: 12px; bottom: 13px; right: 12px; height: 180px; background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/bolsillomenu.png?fileID=2800000&amp;guid=2e24e0b2d7d9472479f5a421d3962437&amp;type=3#bolsillomenu&quot;); background-size: 100% 300%;"/>
+            <ui:VisualElement name="dossier-tabs" class="pause-tabs" style="flex-grow: 1; position: absolute; left: 28px; right: 28px; top: -24px; height: 64px; flex-direction: row;">
+                <ui:Button text="PAUSA" name="pause-tab-button" class="dossier-tab" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/pesta%C3%B1aInactiva.png?fileID=2800000&amp;guid=e93e2f0cba4103348a47e7ac13564aaa&amp;type=3#pestañaInactiva&quot;);"/>
+                <ui:Button text="OPCIONES" name="options-tab-button" class="dossier-tab" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/pesta%C3%B1aInactiva.png?fileID=2800000&amp;guid=e93e2f0cba4103348a47e7ac13564aaa&amp;type=3#pestañaInactiva&quot;);"/>
+                <ui:Button text="CONTROLES" name="controls-tab-button" class="dossier-tab" style="background-image: url(&quot;project://database/Assets/Carpeta_Laura/UI/Dossier/pesta%C3%B1aInactiva.png?fileID=2800000&amp;guid=e93e2f0cba4103348a47e7ac13564aaa&amp;type=3#pestañaInactiva&quot;);"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
