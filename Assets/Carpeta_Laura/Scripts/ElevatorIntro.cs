@@ -33,21 +33,21 @@ public class ElevatorIntro : MonoBehaviour
             yield break;
         }
 
-        // Comienza con las puertas cerradas.
+        
         overlay.style.display = DisplayStyle.Flex;
         leftDoor.style.left = Length.Percent(0f);
         rightDoor.style.right = Length.Percent(0f);
 
-        // Evita activar botones con mouse o teclado durante la apertura.
+        
         menuPanel.SetEnabled(false);
 
-        // La campana anuncia la llegada.
+        
         if (elevatorAudio != null && arrivalBell != null)
             elevatorAudio.PlayOneShot(arrivalBell);
 
         yield return new WaitForSecondsRealtime(initialDelay);
 
-        // El sonido de puertas empieza junto con el movimiento.
+        
         if (elevatorAudio != null && doorOpening != null)
             elevatorAudio.PlayOneShot(doorOpening);
 
@@ -59,18 +59,18 @@ public class ElevatorIntro : MonoBehaviour
 
             float progress = Mathf.Clamp01(elapsed / openingDuration);
 
-            // Suaviza el arranque y el final del movimiento.
+            
             float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
             float position = Mathf.Lerp(0f, -60f, smoothProgress);
 
-            // Cada puerta se desplaza hacia su lado.
+            
             leftDoor.style.left = Length.Percent(position);
             rightDoor.style.right = Length.Percent(position);
 
             yield return null;
         }
 
-        // Retira la capa para que no bloquee los clics.
+        
         overlay.style.display = DisplayStyle.None;
         menuPanel.SetEnabled(true);
 

@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
+using GameJam2.Core;
 
 [RequireComponent(typeof(UIDocument))]
 public class PauseMenuController : MonoBehaviour
@@ -99,6 +100,9 @@ public class PauseMenuController : MonoBehaviour
 
     private void Update()
     {
+        if (GameJam2.Puzzles.KeypadPanel.BlocksPauseThisFrame)
+            return;
+
         if (!isReady || isAnimating || Keyboard.current == null)
             return;
 
@@ -120,6 +124,7 @@ public class PauseMenuController : MonoBehaviour
         previousCursorVisible = Cursor.visible;
 
         isPaused = true;
+        PlayerControlLock.Lock();
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -254,6 +259,8 @@ public class PauseMenuController : MonoBehaviour
 
     private void RestoreGameState()
     {
+        PlayerControlLock.Unlock();
+
         Time.timeScale = previousTimeScale;
         Cursor.lockState = previousCursorLock;
         Cursor.visible = previousCursorVisible;

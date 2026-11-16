@@ -35,7 +35,7 @@ public class AudioSettingsUI : MonoBehaviour
             return;
         }
 
-        // Los tres controles usan una escala de 0 a 100.
+        
         PrepareSlider(masterSlider, MasterKey);
         PrepareSlider(musicSlider, MusicKey);
         PrepareSlider(sfxSlider, SFXKey);
@@ -44,7 +44,7 @@ public class AudioSettingsUI : MonoBehaviour
         musicSlider.RegisterValueChangedCallback(OnMusicChanged);
         sfxSlider.RegisterValueChangedCallback(OnSFXChanged);
 
-        // Aplica el mixer después de la inicialización de Unity.
+        
         applyOnNextUpdate = true;
     }
 
@@ -89,15 +89,14 @@ public class AudioSettingsUI : MonoBehaviour
 
     private void ApplyEffects(float value)
     {
-        // El slider Efectos controla también el ambiente.
+        
         ApplyVolume("SFXVolume", value);
         ApplyVolume("AmbienceVolume", value);
     }
 
     private void ApplyVolume(string parameter, float value)
     {
-        // Convierte el porcentaje a decibelios.
-        // Evita calcular Log10(0); el mínimo del mixer es -80 dB.
+     
         float decibels = value <= 0f
             ? -80f
             : Mathf.Max(-80f, 20f * Mathf.Log10(value / 100f));

@@ -10,7 +10,7 @@ public class UIButtonAudio : MonoBehaviour
     private VisualElement root;
     private AudioSource audioSettings;
 
-    // Un reproductor compartido que continúa al cambiar de escena.
+    
     private static AudioSource sharedAudio;
 
     private void OnEnable()
@@ -18,7 +18,7 @@ public class UIButtonAudio : MonoBehaviour
         audioSettings = GetComponent<AudioSource>();
         root = GetComponent<UIDocument>().rootVisualElement;
 
-        // Escucha la pulsación antes de que el botón cambie de pantalla.
+       
         root.RegisterCallback<PointerDownEvent>(
             OnPointerDown,
             TrickleDown.TrickleDown
@@ -38,11 +38,10 @@ public class UIButtonAudio : MonoBehaviour
 
     private void OnPointerDown(PointerDownEvent evt)
     {
-        // Solo responde al botón izquierdo del mouse.
+        
         if (evt.button != 0)
             return;
 
-        // Busca si lo pulsado es un botón o parte de uno.
         VisualElement element = evt.target as VisualElement;
 
         while (element != null && element != root)
@@ -74,11 +73,11 @@ public class UIButtonAudio : MonoBehaviour
             sharedAudio.loop = false;
             sharedAudio.spatialBlend = 0f;
 
-            // Permite sonidos de interfaz si luego pausamos el audio del juego.
+            
             sharedAudio.ignoreListenerPause = true;
         }
 
-        // Usa el volumen y la salida configurados en este menú.
+        
         sharedAudio.volume = audioSettings.volume;
         sharedAudio.outputAudioMixerGroup =
             audioSettings.outputAudioMixerGroup;
