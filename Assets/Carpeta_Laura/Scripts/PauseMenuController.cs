@@ -31,9 +31,11 @@ public class PauseMenuController : MonoBehaviour
     private VisualElement pausePanel;
     private VisualElement optionsPanel;
     private VisualElement currentPage;
+    private VisualElement controlsPanel;
 
     private Button resumeButton;
-    private Button optionsButton;
+    private Button controlsTab;
+    private Button controlsBackButton;
     private Button backButton;
     private Button mainMenuButton;
     private Button pauseTab;
@@ -41,7 +43,6 @@ public class PauseMenuController : MonoBehaviour
 
     private bool isReady;
     private bool isPaused;
-    private bool showingOptions;
     private bool isAnimating;
 
     private float previousTimeScale;
@@ -56,20 +57,22 @@ public class PauseMenuController : MonoBehaviour
         tabs = root.Q("dossier-tabs");
         pausePanel = root.Q("pause-panel");
         optionsPanel = root.Q("options-panel");
+        controlsPanel = root.Q("controls-panel");
 
         resumeButton = root.Q<Button>("resume-button");
-        optionsButton = root.Q<Button>("pause-options-button");
+        controlsTab = root.Q<Button>("controls-tab-button");
+        controlsBackButton = root.Q<Button>("controls-back-button");
         backButton = root.Q<Button>("options-back-button");
         mainMenuButton = root.Q<Button>("main-menu-button");
         pauseTab = root.Q<Button>("pause-tab-button");
         optionsTab = root.Q<Button>("options-tab-button");
 
-        // También oculta el cartón, el bolsillo y las pestañas.
+        
         root.style.display = DisplayStyle.None;
 
         isReady = window != null && tabs != null &&
-                  pausePanel != null && optionsPanel != null &&
-                  resumeButton != null && optionsButton != null &&
+                  pausePanel != null && optionsPanel != null && controlsPanel != null &&
+                  resumeButton != null && controlsTab != null && controlsBackButton != null &&
                   backButton != null && mainMenuButton != null &&
                   pauseTab != null && optionsTab != null;
 
@@ -83,7 +86,8 @@ public class PauseMenuController : MonoBehaviour
         }
 
         resumeButton.clicked += Resume;
-        optionsButton.clicked += ShowOptions;
+        controlsTab.clicked += ShowControls;
+        controlsBackButton.clicked += ShowPausePanel;
         backButton.clicked += ShowPausePanel;
         mainMenuButton.clicked += ReturnToMainMenu;
         pauseTab.clicked += ShowPausePanel;
@@ -102,7 +106,7 @@ public class PauseMenuController : MonoBehaviour
         {
             if (!isPaused)
                 Pause();
-            else if (showingOptions)
+            else if (currentPage != pausePanel)
                 ShowPausePanel();
             else
                 Resume();
@@ -120,10 +124,11 @@ public class PauseMenuController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Cada vez que pausamos, la hoja comienza guardada.
+        
         currentPage = null;
         pausePanel.style.display = DisplayStyle.None;
         optionsPanel.style.display = DisplayStyle.None;
+        controlsPanel.style.display = DisplayStyle.None;
 
         root.style.display = DisplayStyle.Flex;
         ShowPausePanel();
@@ -131,32 +136,31 @@ public class PauseMenuController : MonoBehaviour
 
     private void ShowPausePanel()
     {
-        ChangePage(false);
+        ChangePage(pausePanel);
     }
 
     private void ShowOptions()
     {
-        ChangePage(true);
+        ChangePage(optionsPanel);
     }
 
-    private void ChangePage(bool openOptions)
+    private void ShowControls()
+    {
+        ChangePage(controlsPanel);
+    }
+
+    private void ChangePage(VisualElement nextPage)
     {
         if (!isPaused || isAnimating)
             return;
 
-        VisualElement nextPage = openOptions
-            ? optionsPanel
-            : pausePanel;
-
         if (nextPage == currentPage)
             return;
 
-        StartCoroutine(SwitchPage(nextPage, openOptions));
+        StartCoroutine(SwitchPage(nextPage));
     }
 
-    private IEnumerator SwitchPage(
-        VisualElement nextPage,
-        bool openOptions)
+    private IEnumerator SwitchPage(VisualElement nextPage)
     {
         isAnimating = true;
 
@@ -164,17 +168,17 @@ public class PauseMenuController : MonoBehaviour
         window.SetEnabled(false);
         tabs.SetEnabled(false);
 
-        // Primero guarda la hoja que estaba abierta.
+        
         if (currentPage != null)
         {
             yield return Slide(currentPage, openTop, hiddenTop);
             currentPage.style.display = DisplayStyle.None;
         }
 
-        showingOptions = openOptions;
+        currentPage = nextPage;
         UpdateTabImages();
 
-        // Después extrae la nueva hoja desde el bolsillo.
+        
         nextPage.style.top = hiddenTop;
         nextPage.style.display = DisplayStyle.Flex;
 
@@ -185,8 +189,10 @@ public class PauseMenuController : MonoBehaviour
         tabs.SetEnabled(true);
         isAnimating = false;
 
-        if (showingOptions)
+        if (currentPage == optionsPanel)
             backButton.Focus();
+        else if (currentPage == controlsPanel)
+            controlsBackButton.Focus();
         else
             resumeButton.Focus();
     }
@@ -219,16 +225,22 @@ public class PauseMenuController : MonoBehaviour
 
     private void UpdateTabImages()
     {
-        if (normalTabImage == null || activeTabImage == null)
-            return;
+        SetTabImage(pauseTab, currentPage == pausePanel);
+        SetTabImage(optionsTab, currentPage == optionsPanel);
+        SetTabImage(controlsTab, currentPage == controlsPanel);
+    }
 
-        pauseTab.style.backgroundImage = new StyleBackground(
-            showingOptions ? normalTabImage : activeTabImage
-        );
+    private void SetTabImage(Button tab, bool isActive)
+    {
+        if (normalTabImage != null && activeTabImage != null)
+            tab.style.backgroundImage = new StyleBackground(
+                isActive ? activeTabImage : normalTabImage
+            );
 
-        optionsTab.style.backgroundImage = new StyleBackground(
-            showingOptions ? activeTabImage : normalTabImage
-        );
+        Color textColor = isActive
+            ? new Color32(229, 225, 223, 255)
+            : new Color32(37, 33, 36, 255);
+        tab.style.color = textColor;
     }
 
     private void Resume()
@@ -247,7 +259,6 @@ public class PauseMenuController : MonoBehaviour
         Cursor.visible = previousCursorVisible;
 
         isPaused = false;
-        showingOptions = false;
     }
 
     private void ReturnToMainMenu()
@@ -281,8 +292,11 @@ public class PauseMenuController : MonoBehaviour
         if (resumeButton != null)
             resumeButton.clicked -= Resume;
 
-        if (optionsButton != null)
-            optionsButton.clicked -= ShowOptions;
+        if (controlsTab != null)
+            controlsTab.clicked -= ShowControls;
+
+        if (controlsBackButton != null)
+            controlsBackButton.clicked -= ShowPausePanel;
 
         if (backButton != null)
             backButton.clicked -= ShowPausePanel;

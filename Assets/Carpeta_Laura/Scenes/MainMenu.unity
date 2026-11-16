@@ -283,8 +283,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a928ef819eac6e448ab1e92d80fa1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
-  normalTabImage: {fileID: 2800000, guid: cc6ae579586a89842b4f1e0219ca8c0a, type: 3}
-  activeTabImage: {fileID: 2800000, guid: d4b7bea06c30fd049b053cb5584377c9, type: 3}
+  normalTabImage: {fileID: 2800000, guid: e93e2f0cba4103348a47e7ac13564aaa, type: 3}
+  activeTabImage: {fileID: 2800000, guid: f14f626245ad33142aa33932e014b9c2, type: 3}
   slideDuration: 0.4
   openTop: 48
   hiddenTop: 600
