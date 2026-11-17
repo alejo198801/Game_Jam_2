@@ -291,6 +291,21 @@ public class PauseMenuController : MonoBehaviour
         SceneManager.LoadScene(mainMenuScene);
     }
 
+    public void CloseForDefeat()
+    {
+        if (!isPaused)
+            return;
+
+        StopAllCoroutines();
+        isAnimating = false;
+
+        root.style.display = DisplayStyle.None;
+        RestoreGameState();
+
+        window.SetEnabled(true);
+        tabs.SetEnabled(true);
+    }
+
     private void OnDisable()
     {
         StopAllCoroutines();
@@ -322,4 +337,6 @@ public class PauseMenuController : MonoBehaviour
 
         isReady = false;
     }
+
+    
 }

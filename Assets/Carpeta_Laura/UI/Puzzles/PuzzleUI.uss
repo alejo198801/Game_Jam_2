@@ -1,0 +1,18 @@
+:root {
+}
+
+.defeat-button:hover {
+    color: rgb(229, 225, 223);
+    background-color: rgb(230, 49, 56);
+}
+
+.defeat-button:focus {
+}
+
+.defeat-button:active {
+    color: rgb(229, 225, 223);
+    background-color: rgb(37, 33, 36);
+}
+
+.defeat-button {
+}

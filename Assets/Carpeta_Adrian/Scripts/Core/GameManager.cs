@@ -13,6 +13,7 @@ namespace GameJam2.Core
 
         [SerializeField] private Transform room2Checkpoint;   // dónde reaparece al morir
         [SerializeField] private float restartDelay = 2f;
+        [SerializeField] private bool autoRestartOnLose = true;
 
         public UnityEvent OnWin;
         public UnityEvent OnLose;
@@ -45,24 +46,30 @@ namespace GameJam2.Core
 
         public void Lose()
         {
-            // TODO: Si se está jugando, pasar a Lost, invocar OnLose y reiniciar tras restartDelay.
-            if(State != GameState.Playing)
-            {
+            if (State != GameState.Playing)
                 return;
-            }
+
             State = GameState.Lost;
             OnLose?.Invoke();
-            Invoke(nameof(Restart), restartDelay); 
+
+            if (autoRestartOnLose)
+                Invoke(nameof(Restart), restartDelay);
         }
 
         /// Plantilla simple: recarga la escena. Cambiar a checkpoint si quieren reiniciar desde la habitación 2.
         public void Restart()
         {
-            // TODO: Invocar OnRestart, liberar PlayerControlLock y recargar la escena o volver al checkpoint.
-            OnRestart?.Invoke();
-            PlayerControlLock.ResetAll();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            // Evita que quede pendiente otro reinicio automático.
+            CancelInvoke(nameof(Restart));
 
+            OnRestart?.Invoke();
+
+            Time.timeScale = 1f;
+            PlayerControlLock.ResetAll();
+
+            SceneManager.LoadScene(
+                SceneManager.GetActiveScene().buildIndex
+            );
         }
     }
 }
