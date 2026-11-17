@@ -18,7 +18,7 @@ namespace GameJam2.Core
         [SerializeField] private Collider blockingCollider;
 
         [Header("Solo para probar")]
-        [SerializeField] private bool debugKeys = true;          // O abre, C cierra
+        //[SerializeField] private bool debugKeys = true;          // O abre, C cierra
 
         [Header("Eventos para arte y sonido")]
         public UnityEvent OnDoorOpened;
@@ -37,11 +37,7 @@ namespace GameJam2.Core
 
         private void Update()
         {
-            if (!debugKeys) return;
-            var kb = Keyboard.current;
-            if (kb == null) return;
-            if (kb.oKey.wasPressedThisFrame) Open();
-            if (kb.cKey.wasPressedThisFrame) Close();
+            
         }
 
         [ContextMenu("Open")]
