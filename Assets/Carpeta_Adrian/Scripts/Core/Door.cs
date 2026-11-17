@@ -1,5 +1,3 @@
-// COMPARTIDO (dueño: Programador B). A solo llama Open().
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -11,10 +9,16 @@ namespace GameJam2.Core
         [Header("Estado")]
         [SerializeField] private bool startsLocked = true;
 
-        [Header("Movimiento de la hoja")]
-        [SerializeField] private Transform doorLeaf;      // la Bisagra
-        [SerializeField] private float openAngle = 90f;   // usa -90 si abre hacia el otro lado
-        [SerializeField] private float openDuration = 1f;
+        [Header("Animación")]
+        [SerializeField] private Animator animator;              // el de la Visagra
+        [SerializeField] private string openTrigger = "Abrir";   // trigger del controller
+        [SerializeField] private string closeTrigger = "";       // vacío: no hay animación de cerrar
+
+        [Header("Bloqueo físico (opcional)")]
+        [SerializeField] private Collider blockingCollider;
+
+        [Header("Solo para probar")]
+        [SerializeField] private bool debugKeys = true;          // O abre, C cierra
 
         [Header("Eventos para arte y sonido")]
         public UnityEvent OnDoorOpened;
@@ -24,56 +28,50 @@ namespace GameJam2.Core
         public bool IsLocked { get; private set; }
         public bool IsOpen { get; private set; }
 
-        private Quaternion closedRot;
-        private Quaternion openRot;
-
         private void Awake()
         {
             IsLocked = startsLocked;
-            if (doorLeaf == null) doorLeaf = transform;
-            closedRot = doorLeaf.localRotation;
-            openRot = closedRot * Quaternion.Euler(0f, openAngle, 0f);
+            if (animator == null) animator = GetComponentInChildren<Animator>();
+            if (animator == null) Debug.LogWarning($"{name}: no encuentro Animator", this);
         }
 
-        // SOLO PARA PROBAR: borra este Update cuando los puzles ya llamen Open()
-       
+        private void Update()
+        {
+            if (!debugKeys) return;
+            var kb = Keyboard.current;
+            if (kb == null) return;
+            if (kb.oKey.wasPressedThisFrame) Open();
+            if (kb.cKey.wasPressedThisFrame) Close();
+        }
 
-        /// Desbloquea y abre. Esto es lo que llaman los puzles.
+        [ContextMenu("Open")]
         public void Open()
         {
             if (IsOpen) return;
+            Debug.Log($"{name}: Open()");
             IsLocked = false;
             IsOpen = true;
-            StopAllCoroutines();
-            StartCoroutine(MoveLeaf(openRot));
+            if (animator != null) animator.SetTrigger(openTrigger);
+            if (blockingCollider != null) blockingCollider.enabled = false;
             OnDoorOpened?.Invoke();
         }
 
+        [ContextMenu("Close")]
         public void Close()
         {
             if (!IsOpen) return;
             IsOpen = false;
-            StopAllCoroutines();
-            StartCoroutine(MoveLeaf(closedRot));
+            if (animator != null && !string.IsNullOrEmpty(closeTrigger)) animator.SetTrigger(closeTrigger);
+            if (blockingCollider != null) blockingCollider.enabled = true;
             OnDoorClosed?.Invoke();
         }
 
-        public void Lock()
-        {
-            IsLocked = true;
-        }
+        public void Lock() => IsLocked = true;
 
-        private IEnumerator MoveLeaf(Quaternion target)
+        public void TryOpenByPlayer()
         {
-            Quaternion start = doorLeaf.localRotation;
-            float t = 0f;
-            while (t < 1f)
-            {
-                t += Time.deltaTime / openDuration;
-                doorLeaf.localRotation = Quaternion.Slerp(start, target, t);
-                yield return null;
-            }
-            doorLeaf.localRotation = target; // asegura que termine exacto
+            if (IsLocked) OnDoorLockedTry?.Invoke();
+            else Open();
         }
     }
 }

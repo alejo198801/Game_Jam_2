@@ -11,9 +11,12 @@ namespace GameJam2.Core
     {
         public static GameManager Instance { get; private set; }
 
-        [SerializeField] private Transform room2Checkpoint;   // dónde reaparece al morir
+        [SerializeField] private Transform room2Checkpoint;
+
+        [Tooltip("Desmárcalo si usas una pantalla de derrota con botones.")]
+        [SerializeField] private bool autoRestart = false;
+
         [SerializeField] private float restartDelay = 2f;
-        [SerializeField] private bool autoRestartOnLose = true;
 
         public UnityEvent OnWin;
         public UnityEvent OnLose;
@@ -23,24 +26,21 @@ namespace GameJam2.Core
 
         private void Awake()
         {
-            // TODO: Singleton: guardar Instance y destruir duplicados.
-            if(Instance != null && Instance != this) 
+            if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
-                return; 
+                return;
             }
-            Instance = this; 
 
+            Instance = this;
         }
 
         public void Win()
         {
-            // TODO: Si se está jugando, pasar a Won e invocar OnWin.
-            if(State != GameState.Playing)
-            {
+            if (State != GameState.Playing)
                 return;
-            }
-            State = GameState.Won; 
+
+            State = GameState.Won;
             OnWin?.Invoke();
         }
 
@@ -52,14 +52,15 @@ namespace GameJam2.Core
             State = GameState.Lost;
             OnLose?.Invoke();
 
-            if (autoRestartOnLose)
+            // Actívalo solo si quieres reiniciar sin esperar al jugador.
+            if (autoRestart)
                 Invoke(nameof(Restart), restartDelay);
         }
 
-        /// Plantilla simple: recarga la escena. Cambiar a checkpoint si quieren reiniciar desde la habitación 2.
+        // Recarga la escena actual.
         public void Restart()
         {
-            // Evita que quede pendiente otro reinicio automático.
+            // Evita que quede otro reinicio automático pendiente.
             CancelInvoke(nameof(Restart));
 
             OnRestart?.Invoke();
@@ -70,6 +71,17 @@ namespace GameJam2.Core
             SceneManager.LoadScene(
                 SceneManager.GetActiveScene().buildIndex
             );
+        }
+
+        // El nombre del menú debe coincidir con una escena de la Scene List.
+        public void GoToMenu(string menuSceneName)
+        {
+            CancelInvoke(nameof(Restart));
+
+            PlayerControlLock.ResetAll();
+            Time.timeScale = 1f;
+
+            SceneManager.LoadScene(menuSceneName);
         }
     }
 }

@@ -1,6 +1,5 @@
-// PROGRAMADOR A. En cada zona del puzle 2: Collider con "Is Trigger" + un hijo vacío "SnapPoint".
-// CAMBIO: el encaje se decide por distancia al soltar (no por OnTriggerEnter), porque
-// PickupObject apaga el collider mientras se carga y la zona nunca lo registraba.
+// PROGRAMADOR A. Zona que acepta VARIOS objetos (ej: 3 huevos en el mismo nido).
+// Collider con "Is Trigger" + un hijo vacío por cada lugar (SnapPoint_1, _2, _3).
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,100 +9,85 @@ namespace GameJam2.Puzzles
     [RequireComponent(typeof(Collider))]
     public class DropZone : MonoBehaviour
     {
-        [Tooltip("ID del PickupObject correcto para esta zona.")]
-        [SerializeField] private string expectedObjectId = "Objeto";
-        [SerializeField] private Transform snapPoint;
+        [Tooltip("ID que deben tener los objetos de esta zona (ej: Huevo).")]
+        [SerializeField] private string expectedObjectId = "Huevo";
+        [Tooltip("Un punto por cada objeto que cabe. 3 huevos = 3 puntos.")]
+        [SerializeField] private Transform[] snapPoints;
         [SerializeField] private ObjectPuzzleManager manager;
-        [Tooltip("Qué tan cerca del collider debe soltarse el objeto para encajar (metros).")]
-        [SerializeField] private float snapDistance = 0.5f;
 
         public UnityEvent OnCorrectPlaced;
         public UnityEvent OnWrongPlaced;
+        public UnityEvent OnZoneFull;          // cuando están todos
 
         public bool IsSolved { get; private set; }
+        public int CorrectCount { get; private set; }
+        public int Capacity => snapPoints.Length;
 
-        private PickupObject occupant;
-        private Collider zoneCol;
+        private PickupObject[] occupants;
 
         private static readonly List<DropZone> all = new List<DropZone>();
+        private readonly HashSet<PickupObject> inside = new HashSet<PickupObject>();
 
-        private void Awake()
+        private void Awake() => occupants = new PickupObject[snapPoints.Length];
+        private void OnEnable() => all.Add(this);
+        private void OnDisable() => all.Remove(this);
+        private void Reset() => GetComponent<Collider>().isTrigger = true;
+
+        private void OnTriggerEnter(Collider other)
         {
-            zoneCol = GetComponent<Collider>();
+            var p = other.GetComponentInParent<PickupObject>();
+            if (p != null) inside.Add(p);
         }
 
-        private void OnEnable()
+        private void OnTriggerExit(Collider other)
         {
-            if (!all.Contains(this)) all.Add(this);
+            var p = other.GetComponentInParent<PickupObject>();
+            if (p != null) inside.Remove(p);
         }
 
-        private void OnDisable()
-        {
-            all.Remove(this);
-        }
-
-        private void Reset()
-        {
-            Collider col = GetComponent<Collider>();
-            if (col != null) col.isTrigger = true;
-        }
-
-        /// Se llama al soltar un objeto: busca la zona libre más cercana que lo tenga a su alcance.
+        /// Al soltar un objeto, la primera zona con lugar libre que lo tenga dentro lo encaja.
         public static void TrySnapNearest(PickupObject obj)
         {
-            DropZone best = null;
-            float bestDist = float.MaxValue;
-            Vector3 p = obj.transform.position;
-
             foreach (var zone in all)
-            {
-                if (zone.IsSolved || zone.occupant != null) continue;
-
-                // ClosestPoint devuelve el mismo punto si ya está dentro del collider
-                Vector3 closest = zone.zoneCol.ClosestPoint(p);
-                if ((closest - p).sqrMagnitude > zone.snapDistance * zone.snapDistance) continue;
-
-                float d = (zone.transform.position - p).sqrMagnitude;
-                if (d < bestDist)
-                {
-                    best = zone;
-                    bestDist = d;
-                }
-            }
-
-            if (best != null) best.Place(obj);
+                if (zone.inside.Contains(obj) && zone.TryPlace(obj)) return;
         }
 
-        private void Place(PickupObject obj)
+        private bool TryPlace(PickupObject obj)
         {
-            occupant = obj;
+            int slot = System.Array.IndexOf(occupants, null);
+            if (slot < 0) return false;                       // zona llena
+
+            occupants[slot] = obj;
             obj.CurrentZone = this;
-            Transform anchor = snapPoint != null ? snapPoint : transform;
-            obj.SnapTo(anchor);
+            obj.SnapTo(snapPoints[slot]);
 
-            if (obj.ObjectId == expectedObjectId)
-            {
-                IsSolved = true;
-                OnCorrectPlaced?.Invoke();
-            }
-            else
-            {
-                IsSolved = false;
-                OnWrongPlaced?.Invoke();
-            }
+            if (obj.ObjectId == expectedObjectId) OnCorrectPlaced?.Invoke();
+            else OnWrongPlaced?.Invoke();
 
-            if (manager != null) manager.Evaluate();
+            Recount();
+            return true;
         }
 
+        /// Lo llama PickupObject cuando lo vuelven a recoger.
         public void Release(PickupObject obj)
         {
-            if (occupant == obj)
-            {
-                occupant = null;
-                obj.CurrentZone = null;
-                IsSolved = false;
-                if (manager != null) manager.Evaluate();
-            }
+            int slot = System.Array.IndexOf(occupants, obj);
+            if (slot < 0) return;
+            occupants[slot] = null;
+            obj.CurrentZone = null;
+            Recount();
+        }
+
+        private void Recount()
+        {
+            CorrectCount = 0;
+            foreach (var o in occupants)
+                if (o != null && o.ObjectId == expectedObjectId) CorrectCount++;
+
+            bool wasSolved = IsSolved;
+            IsSolved = CorrectCount == Capacity;
+            if (IsSolved && !wasSolved) OnZoneFull?.Invoke();
+            manager.Evaluate();
         }
     }
 }
