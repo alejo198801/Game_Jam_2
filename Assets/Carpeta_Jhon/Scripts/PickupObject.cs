@@ -1,6 +1,7 @@
 // PROGRAMADOR A. En cada objeto movible del puzle 2 (Rigidbody + Collider, tag "Pickup").
 using GameJam2.Core;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GameJam2.Puzzles
 {
@@ -9,6 +10,9 @@ namespace GameJam2.Puzzles
     {
         [Tooltip("ID que la DropZone espera, por ejemplo \"Lampara\". Debe coincidir exactamente.")]
         [SerializeField] private string objectId = "Objeto";
+
+        [Header("Eventos de sonido")]
+        public UnityEvent OnPickedUp;
 
         public string ObjectId => objectId;
         public bool IsHeld { get; private set; }
@@ -56,6 +60,7 @@ namespace GameJam2.Puzzles
             transform.SetParent(holdPoint);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
+            OnPickedUp?.Invoke();
         }
 
         public void OnDropped()
