@@ -68,7 +68,7 @@ public class PauseMenuController : MonoBehaviour
         pauseTab = root.Q<Button>("pause-tab-button");
         optionsTab = root.Q<Button>("options-tab-button");
 
-        
+
         root.style.display = DisplayStyle.None;
 
         isReady = window != null && tabs != null &&
@@ -100,6 +100,14 @@ public class PauseMenuController : MonoBehaviour
 
     private void Update()
     {
+        
+        if (GameManager.Instance != null &&
+            GameManager.Instance.State != GameState.Playing)
+        {
+            CloseForResult();
+            return;
+        }
+
         if (GameJam2.Puzzles.KeypadPanel.BlocksPauseThisFrame)
             return;
 
@@ -129,7 +137,7 @@ public class PauseMenuController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        
+
         currentPage = null;
         pausePanel.style.display = DisplayStyle.None;
         optionsPanel.style.display = DisplayStyle.None;
@@ -169,11 +177,11 @@ public class PauseMenuController : MonoBehaviour
     {
         isAnimating = true;
 
-        // Bloquea controles mientras se están moviendo.
+        
         window.SetEnabled(false);
         tabs.SetEnabled(false);
 
-        
+
         if (currentPage != null)
         {
             yield return Slide(currentPage, openTop, hiddenTop);
@@ -183,7 +191,7 @@ public class PauseMenuController : MonoBehaviour
         currentPage = nextPage;
         UpdateTabImages();
 
-        
+
         nextPage.style.top = hiddenTop;
         nextPage.style.display = DisplayStyle.Flex;
 
@@ -215,7 +223,7 @@ public class PauseMenuController : MonoBehaviour
 
         while (elapsed < slideDuration)
         {
-            // Sigue avanzando aunque Time.timeScale sea cero.
+            
             elapsed += Time.unscaledDeltaTime;
 
             float progress = Mathf.Clamp01(elapsed / slideDuration);
@@ -291,6 +299,12 @@ public class PauseMenuController : MonoBehaviour
         SceneManager.LoadScene(mainMenuScene);
     }
 
+   
+    public void CloseForResult()
+    {
+        CloseForDefeat();
+    }
+
     public void CloseForDefeat()
     {
         if (!isPaused)
@@ -338,5 +352,5 @@ public class PauseMenuController : MonoBehaviour
         isReady = false;
     }
 
-    
+
 }

@@ -96,7 +96,7 @@ public class DefeatUI : MonoBehaviour
         if (!ready || showing || gameManager == null)
             return;
 
-        // Devuelve únicamente el bloqueo de Pausa, si estaba abierto.
+       
         if (pauseMenu != null)
             pauseMenu.CloseForDefeat();
 
@@ -121,13 +121,13 @@ public class DefeatUI : MonoBehaviour
 
     private IEnumerator FinishCapture()
     {
-        // OnLose se emite dentro de Lose(): deja terminar ese método primero.
+        
         yield return null;
         gameManager.CancelInvoke(nameof(GameManager.Restart));
 
         if (captureAudio != null && captureAudio.isPlaying)
         {
-            // Límite de seguridad: un Loop activado por error no bloquea los botones.
+            
             float duration = captureAudio.clip != null
                 ? captureAudio.clip.length / Mathf.Max(0.01f, Mathf.Abs(captureAudio.pitch))
                 : 5f;
@@ -136,13 +136,13 @@ public class DefeatUI : MonoBehaviour
             if (captureAudio.loop)
                 Debug.LogWarning("Desactiva Loop en SpiderAttackAudio.", captureAudio);
 
-            // El mundo sigue durante el ataque, pero el jugador ya está bloqueado.
+            
             while (captureAudio != null && captureAudio.isPlaying &&
                    Time.unscaledTime < deadline)
                 yield return null;
         }
 
-        // Pausar antes silenciaría el ataque mediante EnemyAudioPause.
+        
         Time.timeScale = 0f;
         frozeTime = true;
         retryButton.SetEnabled(true);

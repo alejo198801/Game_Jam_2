@@ -16,3 +16,26 @@
 
 .defeat-button {
 }
+
+.victory-button {
+    color: #252124;
+    background-color: transparent;
+    background-image: none;
+
+    border-width: 0;
+    border-left-width: 6px;
+    border-left-color: transparent;
+    border-radius: 0;
+}
+
+.victory-button:hover,
+.victory-button:focus {
+    color: #252124;
+    background-color: rgba(37, 33, 36, 0.14);
+    border-left-color: #E63138;
+}
+
+.victory-button:active {
+    background-color: rgba(37, 33, 36, 0.24);
+    border-left-color: #E63138;
+}

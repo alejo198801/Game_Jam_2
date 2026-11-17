@@ -16,7 +16,7 @@ namespace GameJam2.Puzzles
 
         public string ObjectId => objectId;
         public bool IsHeld { get; private set; }
-        public DropZone CurrentZone { get; set; }   // la llena DropZone
+        public DropZone CurrentZone { get; set; }   
 
         public string InteractPrompt => IsHeld ? "Soltar" : "Recoger";
 

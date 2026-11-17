@@ -7,6 +7,10 @@ public class UIButtonAudio : MonoBehaviour
     [Header("Sonido de botones")]
     [SerializeField] private AudioClip clickSound;
 
+    [Header("Filtro opcional")]
+    [Tooltip("Vacío: todos los botones. Si tiene un nombre, solo los de ese contenedor.")]
+    [SerializeField] private string containerName;
+
     private VisualElement root;
     private AudioSource audioSettings;
 
@@ -38,7 +42,6 @@ public class UIButtonAudio : MonoBehaviour
 
     private void OnPointerDown(PointerDownEvent evt)
     {
-        
         if (evt.button != 0)
             return;
 
@@ -48,9 +51,31 @@ public class UIButtonAudio : MonoBehaviour
         {
             if (element is Button button)
             {
-                if (button.enabledInHierarchy)
-                    PlayClick();
+                if (!button.enabledInHierarchy)
+                    return;
 
+               
+                if (!string.IsNullOrWhiteSpace(containerName))
+                {
+                    VisualElement parent = button.parent;
+                    bool insideContainer = false;
+
+                    while (parent != null)
+                    {
+                        if (parent.name == containerName)
+                        {
+                            insideContainer = true;
+                            break;
+                        }
+
+                        parent = parent.parent;
+                    }
+
+                    if (!insideContainer)
+                        return;
+                }
+
+                PlayClick();
                 return;
             }
 
