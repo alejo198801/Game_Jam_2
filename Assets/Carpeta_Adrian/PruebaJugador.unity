@@ -5648,6 +5648,7 @@ GameObject:
   - component: {fileID: 136953983}
   - component: {fileID: 136953985}
   - component: {fileID: 136953986}
+  - component: {fileID: 136953987}
   m_Layer: 0
   m_Name: PuzzleUI
   m_TagString: Untagged
@@ -5849,6 +5850,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonAudio
   clickSound: {fileID: 8300000, guid: 42dfa4967b1e000408ce61cb6316f7f0, type: 3}
   containerName: victory-root
+--- !u!114 &136953987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136953979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ad7e2495916ab439225db47ce71432, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameplayHUD
+  codeManager: {fileID: 1168906254}
+  objectPuzzleManager: {fileID: 1856266080}
+  nest: {fileID: 1227458201}
+  spider: {fileID: 228040631}
+  gameManager: {fileID: 933772087}
+  bodyFont: {fileID: 12800000, guid: 3f862612f15ac114e8394bee9e3074e9, type: 3}
+  titleFont: {fileID: 12800000, guid: 00f15711c34432044b394f791e02c2c0, type: 3}
+  noticeDuration: 2.2
 --- !u!1001 &149262541
 PrefabInstance:
   m_ObjectHideFlags: 0
